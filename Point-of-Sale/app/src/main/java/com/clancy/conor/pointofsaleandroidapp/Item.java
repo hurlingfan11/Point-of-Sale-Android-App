@@ -13,18 +13,21 @@ public class Item {
     private int mQuantity;
     private GregorianCalendar mDeliveryDate;
 
+    // Empty constructor, set to default (Calendar defaults to todays date
     public Item() {
         mName = "Nothing";
         mQuantity = 0;
         mDeliveryDate = new GregorianCalendar();
     }
 
+    // Constructor to initialize the object of the class with a string, int and calendar
     public Item(String name, int quantity, GregorianCalendar deliveryDate) {
         mName = name;
         mQuantity = quantity;
         mDeliveryDate = deliveryDate;
     }
 
+    // Default for
     public static Item getDefaultItem() {
         return new Item("Earplugs", 5, new GregorianCalendar());
     }
@@ -45,11 +48,13 @@ public class Item {
         mQuantity = quantity;
     }
 
+    // returns string date - used to print out
     public String getDeliveryDateString() {
         return DateFormat.getDateInstance(DateFormat.MEDIUM).format(mDeliveryDate.getTime());
                 // DateFormat.getDateInstance().format(mDeliveryDate);
     }
 
+    // gives time in ms
     public long getDeliveryDateTime() {
         return mDeliveryDate.getTime().getTime();
     }
