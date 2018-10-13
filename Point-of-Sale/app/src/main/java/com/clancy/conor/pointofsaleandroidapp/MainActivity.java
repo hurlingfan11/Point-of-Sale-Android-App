@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mQunatityTextView;
     private TextView mDateTextView;
     private Item mCurrentItem;
+    private Item mClearedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +88,30 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_reset:
                 // will use the default constructor - nothing
+                // Make a bugger of current item if we want to retrieve it
+                mClearedItem = mCurrentItem;
+                // Make a new current item so get rid of it
                 mCurrentItem = new Item();
-                // make an intent to launch settings.
+                // show current item, looks like it is gone but it is stored if we need to retrieve it
                 showCurrentItem();
+                // TODO: Uses a snackbar to allow the user to undo their action
+                // Snackbar is the name of the clas
+                // .make is a static class method, it has 3 arguments, what view, what you want it to say
+                // and how long it must remain up
+                // All that returns a Snackbar object and a snackbar object has an instance method called show
+                // Snackbar.make(findViewById(R.id.coordinator_layout), "Item Cleared", Snackbar.LENGTH_LONG).show();
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), "Item Cleared", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Someone has just clicked your button
+                        // TODO: To do the undo
+                        mCurrentItem = mClearedItem;
+                        showCurrentItem();
+                        Snackbar.make(findViewById(R.id.coordinator_layout), "Item Restored", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+                snackbar.show();
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(Settings.ACTION_LOCALE_SETTINGS));
