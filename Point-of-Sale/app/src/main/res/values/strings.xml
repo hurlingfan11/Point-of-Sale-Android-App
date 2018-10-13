@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Point Of Sale</string>
     <string name="action_settings">Settings</string>
+    <string name="action_reset">Reset</string>
     <string name="item_title">Item ordered</string>
     <string name="name_format">Name: %s</string>
     <string name="quantity_format">Quantity: %d</string>
