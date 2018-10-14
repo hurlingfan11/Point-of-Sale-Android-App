@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.app.AlertDialog;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mDateTextView;
     private Item mCurrentItem;
     private Item mClearedItem;
+    private ArrayList<Item> mItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
         mQunatityTextView=findViewById(R.id.quantity_text);
         mDateTextView=findViewById(R.id.date_text);
 
+        //Create arraylist as we need to put items in there later
+        mItems = new ArrayList<>();
+
+        mItems.add(new Item( "Trainers", 20, new GregorianCalendar()));
+        mItems.add(new Item( "Shorts", 10, new GregorianCalendar()));
+        mItems.add(new Item( "Training Tops", 5, new GregorianCalendar()));
 
         // Given boiler plate code, don't mess with it.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -124,8 +132,12 @@ public class MainActivity extends AppCompatActivity {
                 //nt quantity = quantityEditText.getText().toString(); will need to convert string to Integer
 
                 int quantity = Integer.parseInt(quantityEditText.getText().toString());
+                //make the current item
                 mCurrentItem = new Item(name, quantity, calendar);
+                // show the current item
                 showCurrentItem();
+                // maintaining the list
+                mItems.add(mCurrentItem);
 
             }
         });
@@ -159,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        // This is where you put search
 
         switch(item.getItemId()){
             case R.id.action_reset:
@@ -191,9 +204,45 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 startActivity(new Intent(Settings.ACTION_LOCALE_SETTINGS));
                 break;
+            case R.id.action_search:
+                // make a new method
+                showSearchDialog();
+                break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showSearchDialog() {
+        // show new dialog
+        AlertDialog.Builder alertDialog1 = new AlertDialog.Builder(this);
+        alertDialog1.setTitle(R.string.choose_an_item);
+        // setItems can't be an arrayList, needs to be an array of strings
+        alertDialog1.setItems(getNames(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //sets the current item
+                mCurrentItem = mItems.get(which);
+                // shows the current item
+                showCurrentItem();
+            }
+        });
+
+        // Add a cancel button
+        alertDialog1.setNegativeButton(android.R.string.cancel, null);
+
+        alertDialog1.create().show();
+    }
+
+    private String[] getNames() {
+        String[] names = new String[mItems.size()];
+        // for loop to go through mItems
+        for(int i=0; i<mItems.size(); i++){
+            // get it at location i and get its name
+            names[i] = mItems.get(i).getName();
+
+        }
+        return names;
     }
 }
