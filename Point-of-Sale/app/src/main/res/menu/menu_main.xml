@@ -24,4 +24,11 @@
         app:showAsAction="ifRoom"
         />
 
+    <item
+        android:id="@+id/action_clear_all"
+        android:orderInCategory="100"
+        android:title="Clear All"
+        app:showAsAction="never"
+        />
+
 </menu>

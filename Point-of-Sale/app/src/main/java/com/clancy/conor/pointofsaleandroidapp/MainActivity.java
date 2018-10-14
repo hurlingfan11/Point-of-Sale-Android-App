@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Captureviews
-        //namesincontent_main
+        //Capture views
+        //names in content_main
         nNameTextView=findViewById(R.id.name_text);
         mQunatityTextView=findViewById(R.id.quantity_text);
         mDateTextView=findViewById(R.id.date_text);
@@ -207,6 +207,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_search:
                 // make a new method
                 showSearchDialog();
+                break;
+            case R.id.action_clear_all:
+                AlertDialog.Builder alertDialogClearAll = new AlertDialog.Builder(this);
+                alertDialogClearAll.setTitle(getString(R.string.remove_all));
+                alertDialogClearAll.setMessage("Are you sure you want to remove all items?");
+                alertDialogClearAll.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       mItems.clear();
+                    }
+                });
+                // Add a cancel button
+                alertDialogClearAll.setNegativeButton(android.R.string.cancel, null);
+
+                alertDialogClearAll.create().show();
                 break;
             default:
                 break;
