@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 //mCurrentItem = Item.getDefaultItem();
                 //showCurrentItem();
 
-                addItem();
+                insertItem(false);
                 
                 // for now just practive s
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addItem() {
+    private void insertItem(final boolean isEdit) {
 
         // Create dialog and show it
         //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -116,6 +116,14 @@ public class MainActivity extends AppCompatActivity {
         final CalendarView deliveryDateView = view.findViewById(R.id.calendar_view);
         final GregorianCalendar calendar = new GregorianCalendar();
 
+        //TODO: Populate the dialog with the values if this is an edit
+
+        if(isEdit){
+            nameEditText.setText(mCurrentItem.getName());
+            quantityEditText.setText(""+mCurrentItem.getQuantity());
+            deliveryDateView.setDate(mCurrentItem.getDeliveryDateTime());
+        }
+
         // when you click buttons on calendar that calls a function and you want to update the calendar
         deliveryDateView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -127,8 +135,11 @@ public class MainActivity extends AppCompatActivity {
 
         alertDialog.setNegativeButton(android.R.string.cancel,null);
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                //TODO: Edit the mCurrentItem instead of making a new one if this is an edit
                 // This method runs when you click the OK button
                 String name = nameEditText.getText().toString();
                 // Get quantity which is in hte quantityEditText
@@ -136,13 +147,19 @@ public class MainActivity extends AppCompatActivity {
 
                 int quantity = Integer.parseInt(quantityEditText.getText().toString());
                 //make the current item
-                mCurrentItem = new Item(name, quantity, calendar);
+
+                if(isEdit){
+                    mCurrentItem.setName(name);
+                    mCurrentItem.setQuantity(quantity);
+                    mCurrentItem.setDeliveryDate(calendar);
+                }else{
+                    mCurrentItem = new Item(name, quantity, calendar);
+                    mItems.add(mCurrentItem);
+                }
+
                 // show the current item
                 showCurrentItem();
-                // maintaining the list
-                mItems.add(mCurrentItem);
-
-            }
+                          }
         });
 
         alertDialog.create().show();
@@ -183,17 +200,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_edit:
-                // DEBUG
 
-                showCurrentItem();
-                //Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
-                return true;
+                insertItem(true);
+                // DEBUG
+                Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
+                //nNameTextView = (TextView) nNameTextView.getText();
+                                return true;
             case R.id.action_remove:
                 // Debug
                 //Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
                 mItems.remove(mCurrentItem);
                 mCurrentItem=new Item();
-                nNameTextView.setText("___");
                 showCurrentItem();
                 return true;
 
