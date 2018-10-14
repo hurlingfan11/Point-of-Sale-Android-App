@@ -1,6 +1,9 @@
 package com.clancy.conor.pointofsaleandroidapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.app.AlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 // The default item is ear plugs
                 // TODO: Later make this actually be an add button
                 
-                mCurrentItem = Item.getDefaultItem();
-                showCurrentItem();
+                //mCurrentItem = Item.getDefaultItem();
+                //showCurrentItem();
+
+                addItem();
                 
                 // for now just practive s
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -57,6 +63,43 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void addItem() {
+
+        // Create dialog and show it
+        //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        //Customize the dialog for needs
+        // Simple Dialog
+        /*
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Alert message to be shown");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+        */
+
+        //This creates the view
+
+        alertDialog.setTitle(R.string.add_item);
+        View view = getLayoutInflater().inflate(R.layout.dialog_add, null, false);
+        alertDialog.setView(view);
+        alertDialog.setNegativeButton(android.R.string.cancel,null);
+        alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // This method runs when you click the OK button
+
+            }
+        });
+
+        alertDialog.create().show();
+
     }
 
     private void showCurrentItem() {
