@@ -179,16 +179,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
      //function that get calls so that if you click one of context menu items it gets called
-
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.action_edit:
-                Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
+                // DEBUG
+
+                showCurrentItem();
+                //Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_remove:
-                Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
+                // Debug
+                //Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
+                mItems.remove(mCurrentItem);
+                mCurrentItem=new Item();
+                nNameTextView.setText("___");
+                showCurrentItem();
                 return true;
 
 

@@ -15,7 +15,7 @@ public class Item {
 
     // Empty constructor, set to default (Calendar defaults to todays date
     public Item() {
-        mName = "Nothing";
+        mName = "_ _ _";
         mQuantity = 0;
         mDeliveryDate = new GregorianCalendar();
     }
