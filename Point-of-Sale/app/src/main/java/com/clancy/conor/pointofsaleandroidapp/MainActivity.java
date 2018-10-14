@@ -3,7 +3,6 @@ package com.clancy.conor.pointofsaleandroidapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -11,13 +10,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.app.AlertDialog;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         mItems.add(new Item( "Trainers", 20, new GregorianCalendar()));
         mItems.add(new Item( "Shorts", 10, new GregorianCalendar()));
         mItems.add(new Item( "Training Tops", 5, new GregorianCalendar()));
+
+        // Register context menu, listen for presses on nametext since it has largest font
+        registerForContextMenu(nNameTextView);
 
         // Given boiler plate code, don't mess with it.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -164,6 +167,33 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+
+    // For Context Menu if someone presses for a long time on editText
+    public void onCreateContextMenu(ContextMenu menu,View v, ContextMenu.ContextMenuInfo menuInfo){
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        getMenuInflater().inflate(R.menu.menu_context, menu);
+
+    }
+
+     //function that get calls so that if you click one of context menu items it gets called
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_edit:
+                Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_remove:
+                Toast.makeText(this, "Todo Edit", Toast.LENGTH_LONG).show();
+                return true;
+
+
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override
