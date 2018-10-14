@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -13,8 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.app.AlertDialog;
+
+import java.util.GregorianCalendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,11 +94,38 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setTitle(R.string.add_item);
         View view = getLayoutInflater().inflate(R.layout.dialog_add, null, false);
         alertDialog.setView(view);
+
+        // if you want to capture edit text field, capture where they added in the name
+        // final because it is used in side this private and points to this object and will never change
+        // If you use findViewById(R.id.edit_name); it will only search inside the xml file for aactivity main
+        // by using view.findViewById(R.id.edit_name); it searches in the local variable view in dialog
+
+        final EditText nameEditText = view.findViewById(R.id.edit_name);
+        final EditText quantityEditText = view.findViewById(R.id.edit_quantity);
+        final CalendarView deliveryDateView = view.findViewById(R.id.calendar_view);
+        final GregorianCalendar calendar = new GregorianCalendar();
+
+        // when you click buttons on calendar that calls a function and you want to update the calendar
+        deliveryDateView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            // update calendar object as user clicks calendar
+                calendar.set(year,month,dayOfMonth);
+            }
+        });
+
         alertDialog.setNegativeButton(android.R.string.cancel,null);
         alertDialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // This method runs when you click the OK button
+                String name = nameEditText.getText().toString();
+                // Get quantity which is in hte quantityEditText
+                //nt quantity = quantityEditText.getText().toString(); will need to convert string to Integer
+
+                int quantity = Integer.parseInt(quantityEditText.getText().toString());
+                mCurrentItem = new Item(name, quantity, calendar);
+                showCurrentItem();
 
             }
         });
